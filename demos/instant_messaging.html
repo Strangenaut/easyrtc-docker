@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EasyRTC Demo: Instant Messaging</title>
+        <link rel="stylesheet" type="text/css" href="../easyrtc/easyrtc.css" />
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="../easyrtc/easyrtc.js"></script>
+        <script type="text/javascript" src="js/instant_messaging.js"></script>
+        <style type="text/css">
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            }
+            
+            #chat {
+                margin: 0px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 8px;
+                padding-top: 16px;
+                background: #212121;
+                box-sizing: border-box;
+            }
+
+            #receiveMessageArea {
+                width: 60dvi;
+                margin-left: 8px;
+                margin-right: 8px;
+                color: #ebebeb;
+            }
+
+            #iam {
+                width: 60dvi;
+                color: #ebebeb;
+                margin-left: 8px;
+            }
+
+            #sendMessageArea {
+                width: 60dvi;
+                display: flex;
+                background: #303030;
+                align-items: center;
+                border-radius: 12px;
+                margin-top: auto;
+            }
+
+            #sendMessageText {
+                flex-grow: 1;
+                border: none;
+                resize: none;
+                background: none;
+                color: #ebebeb;
+                text-align: justify;
+                outline: none;
+                margin-top: 8px;
+                margin-bottom: 8px;
+                margin-left: 8px;
+                font-size: 14px;
+            }
+
+            #sendMessageText::placeholder {
+                color: rgba(255, 255, 255, 0.6);
+                font-style: italic;
+            }
+
+            #conversation {
+                height: 100px;
+                overflow-y: scroll;
+            }
+
+            #sendButton {
+                margin-right: 8px;
+                background: white;
+                border: none;
+                border-radius: 100%;
+                padding: 2px;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+            }
+
+            #sendButton:hover {
+                background: #c1c1c1;
+            }
+
+            #sendImg {
+                width: 25px;
+                height: 25px;
+            }
+        </style>
+    </head>
+
+    <body onload="connect()">
+        <div id="chat">
+            <div id="receiveMessageArea">
+                <div id="conversation">
+                    Here are the messages
+                </div>
+            </div>
+    
+            <div id="iam">Obtaining ID...</div>
+    
+            <div id="sendMessageArea">    
+                <textarea id="sendMessageText" placeholder="Type a message"></textarea>
+                
+                <button id="sendButton">
+                    <img id="sendImg" src="images/button_send.svg" alt="Send">
+                </button>
+            </div>
+        </div>
+    </body>
+</html>

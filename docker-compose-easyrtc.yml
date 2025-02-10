@@ -1,0 +1,55 @@
+networks:
+  webrtc:
+    external: true
+
+services:
+  mkcert:
+    image: vishnunair/docker-mkcert
+    container_name: mkcert
+    environment:
+      - domain=easyrtc.local,*.easyrtc.local
+    networks:
+      - webrtc
+    volumes:
+        - ./certs/:/root/.local/share/mkcert
+    labels:
+      - "traefik.enable=false"
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    networks:
+      - webrtc
+    ports:
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./config/dynamic:/etc/traefik/dynamic
+      - ./certs/:/etc/certs:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=webrtc"
+      # dashboard
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.easyrtc.local`)"
+      - "traefik.http.routers.traefik-dashboard.entrypoints=websecure"
+      - "traefik.http.routers.traefik-dashboard.tls=true"
+      - "traefik.http.routers.traefik-dashboard.service=api@internal"
+      - "traefik.http.services.traefik-dashboard.loadbalancer.server.port=8000"
+
+  easyrtc:
+    image: easyrtc-local:0.0.1
+    container_name: easyrtc
+    networks:
+      - webrtc
+    volumes:
+      - ./demos:/app/open-easyrtc/demos
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=webrtc"
+      # easyrtc service
+      - "traefik.http.routers.easyrtc.rule=Host(`easyrtc.local`)"
+      - "traefik.http.routers.easyrtc.entrypoints=websecure"
+      - "traefik.http.routers.easyrtc.tls=true"
+      - "traefik.http.routers.easyrtc.service=easyrtc-service"
+      - "traefik.http.services.easyrtc-service.loadbalancer.server.port=8080"

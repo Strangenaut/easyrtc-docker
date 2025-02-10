@@ -1,0 +1,30 @@
+# logging
+log:
+  level: DEBUG
+
+accessLog:
+  addInternals: true
+  format: "common"
+
+# dashboard
+api:
+  dashboard: true
+  insecure: true
+
+# providers:
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: webrtc
+  file:
+    directory: /etc/traefik/dynamic/dynamic-conf.yml
+    watch: true
+
+# entryPoints
+entryPoints:
+  websecure:
+    address: ":443"
+
+serversTransport:
+  insecureSkipVerify: true

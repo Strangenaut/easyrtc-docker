@@ -1,0 +1,12 @@
+http:
+  services:
+    easyrtc-service:
+      loadBalancer:
+        servers:
+          # Use the name of the easyrtc service on docker-compose-easyrtc.yml file!!!
+          - url: "easyrtc:8080"
+
+tls:
+  certificates:
+    - certFile: /etc/certs/_wildcard.easyrtc.local.pem
+      keyFile: /etc/certs/_wildcard.easyrtc.local-key.pem
